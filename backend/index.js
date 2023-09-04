@@ -2,6 +2,22 @@ const express = require('express');
 const app = express();
 const port = 8000;
 const cors = require('cors');
+const mysql = require('mysql2');
+
+const db = mysql.createConnection({
+	host: '127.0.0.1',
+	user: 'auction',
+	password: 'password',
+	database: 'auction',
+});
+
+db.connect((err) => {
+	if (err) {
+		console.log(err);
+	} else {
+		console.log('Connected to MySQL');
+	}
+});
 
 const corsOptions = {
 	origin: 'http://localhost:5173', // Replace with your frontend URL
@@ -15,7 +31,14 @@ app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
 	console.log('Request made');
-	res.json({ message: 'Hello World!' });
+	db.query('show tables', (err, result) => {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log(result);
+			res.send(result);
+		}
+	});
 });
 
 app.listen(port, () => {
