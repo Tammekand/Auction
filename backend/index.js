@@ -29,18 +29,36 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.get('/', (req, res) => {
+app.get('/items/all', (req, res) => {
 	console.log('Request made');
-	db.query('show tables', (err, result) => {
-		if (err) {
-			console.log(err);
-		} else {
-			console.log(result);
-			res.send(result);
-		}
-	});
+	res.json([
+		{
+			id: 1,
+			name: 'Tool',
+			description: 'Punane tool',
+			price: 10,
+			image: 'https://i.imgur.com/LExRjzC.jpeg',
+			author: 'Karl',
+		},
+		{
+			id: 2,
+			name: 'Laud',
+			description: 'Punane laud',
+			price: 20,
+			image: 'https://i.imgur.com/z2Nqr1N.jpeg',
+			author: 'Karl',
+		},
+		{
+			id: 3,
+			name: 'Kapp',
+			description: 'Sinine kapp',
+			price: 30,
+			image: 'https://i.imgur.com/uNg0diQ.jpeg',
+			author: 'Axel',
+		},
+	]);
 });
 
 app.listen(port, () => {
-	console.log(`App listening on port ${port}`);
+	console.log(`http://localhost:${port}`);
 });
