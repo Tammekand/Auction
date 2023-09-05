@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Item from './components/Item';
 
 function App() {
 	const [res, setRes] = useState(null);
@@ -10,14 +11,15 @@ function App() {
 	return (
 		<>
 			{res?.map((item) => (
-				<>
-					<p>{item.id}</p>
-					<h1>{item.name}</h1>
-					<p>{item.description}</p>
-					<p>{item.price}</p>
-					<p>{item.image}</p>
-					<p>{item.author}</p>
-				</>
+				<div className="flex">
+					<Item
+						name={item.name}
+						desc={item.description}
+						price={item.price}
+						image={item.image}
+						author={item.author}
+					/>
+				</div>
 			))}
 		</>
 	);

@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-const port = 8000;
 const cors = require('cors');
 const mysql = require('mysql2');
+const port = 8000;
 
 const db = mysql.createConnection({
 	host: '127.0.0.1',
@@ -28,9 +28,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(express.json());
 
 app.get('/items/all', (req, res) => {
-	console.log('Request made');
 	res.json([
 		{
 			id: 1,
@@ -57,6 +57,19 @@ app.get('/items/all', (req, res) => {
 			author: 'Axel',
 		},
 	]);
+});
+
+app.post('/items/add', (req, res) => {
+	db.query(
+		`INSERT INTO items (name, description, price, image, author) VALUES ('${req.body.name}', '${req.body.description}', '${req.body.price}', '${req.body.image}', '${req.body.author}')`,
+		(err, result) => {
+			if (err) {
+				res.json({ error: err });
+			} else {
+				res.json({ success: result });
+			}
+		}
+	);
 });
 
 app.listen(port, () => {
