@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql2');
 const port = 8000;
+
+app.use(bodyParser.json());
 
 const db = mysql.createConnection({
 	host: '127.0.0.1',
@@ -31,7 +34,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get('/items/all', (req, res) => {
-	res.json([
+	res.status(200).json([
 		{
 			id: 1,
 			name: 'Tool',
@@ -60,13 +63,24 @@ app.get('/items/all', (req, res) => {
 });
 
 app.post('/items/add', (req, res) => {
+	if (
+		!req.body.name ||
+		!req.body.description ||
+		!req.body.price ||
+		!req.body.image ||
+		!req.body.author
+	) {
+		res.status(400).json({ message: 'Missing required parameters' });
+		return;
+	}
+
 	db.query(
 		`INSERT INTO items (name, description, price, image, author) VALUES ('${req.body.name}', '${req.body.description}', '${req.body.price}', '${req.body.image}', '${req.body.author}')`,
 		(err, result) => {
 			if (err) {
-				res.json({ error: err });
+				res.status(400).json({ message: 'Database error', body: err });
 			} else {
-				res.json({ success: result });
+				res.status(200).json({ message: result });
 			}
 		}
 	);
