@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql2');
 const port = 8000;
+const swaggerUi = require('swagger-ui-express');
+YAML = require('yamljs');
+const swaggerDocument = YAML.load('swagger.yaml');
 
 app.use(bodyParser.json());
 
@@ -32,6 +35,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/items/all', (req, res) => {
 	res.status(200).json([

@@ -1,0 +1,23 @@
+openapi: 3.0.2
+info:
+    title: Auction
+    version: 1.0.0
+    description: School Project
+paths:
+    /items/all:
+        get:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            examples:
+                                item 1:
+                                    value:
+                                        id: 1,
+                                        name: 'Tool'
+                                        description: 'Punane tool'
+                                        price: 10
+                                        image: 'https://i.imgur.com/LExRjzC.jpeg'
+                                        author: 'Karl'
+                    description: Get all items
+            description: ''
